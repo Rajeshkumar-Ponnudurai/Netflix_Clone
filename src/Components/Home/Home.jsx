@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Home.scss";
+import "./Home.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { BiPlay } from "react-icons/bi"
@@ -18,11 +18,13 @@ const Card = ({ img }) => <img className="card" src={img} alt="cover" />;
 const Row = ({ title, arr = [] }) => (
     <div className="row">
         <h2>{title}</h2>
-
         <div>
-            {arr.map((item, index) => (
-                <Card key={index} img={`${imgUrl}/${item.poster_path}`} />
-            ))}
+        {arr.map((item, index) =>
+    item.poster_path && (
+        <Card key={index} img={`${imgUrl}${item.poster_path}`} />
+    )
+)}
+
         </div>
     </div>
 );
@@ -68,7 +70,6 @@ const Home = () => {
         };
 
         getAllGenre();
-
         fetchUpcoming();
         fetchNowPlaying();
         fetchPopular();
@@ -80,11 +81,10 @@ const Home = () => {
             <div
                 className="banner"
                 style={{
-                    backgroundImage: popularMovies[0]
-                        ? `url(${`${imgUrl}/${popularMovies[0].poster_path}`})`
-                        : "rgb(16, 16, 16)",
-                }}
-            >
+                    backgroundImage: popularMovies[0]?.poster_path
+                      ? `url(${imgUrl}${popularMovies[0].poster_path})`
+                      : "rgb(16, 16, 16)"
+                  }}>
                 {popularMovies[0] && <h1>{popularMovies[0].original_title}</h1>}
                 {popularMovies[0] && <p>{popularMovies[0].overview}</p>}
 
